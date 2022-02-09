@@ -1,0 +1,185 @@
+print("Hello, World!")
+
+1 + 1
+2 - 2
+2 * 3
+4 / 2
+3 ^ 2
+5 %% 2   # %% mi dà il resto (modulo) della divisione
+5 %/% 2  # %/% mi dà il quoziente (intero) della divisione
+
+# commento
+
+x <- 42  # creazione di una variabile
+x        # mi dice cos'è la variabile
+x <- 21  # assegno un altro valore alla variabile
+x
+
+my_apples <- 5
+my_oranges <- 6
+my_apples + my_oranges  # operazione tra variabili
+
+rm(x) # rimuovere una variabile -> funzione REMOVE (rm)
+ls()  # funzione LIST -> mi dice tutto quello che c'è nell'environment (non ha argomenti -> nulla tra parentesi)
+
+my_numeric <- 42
+my_character <- "universe"
+my_logical <- T
+# questi sono le 3 fondamentali classi di dati che esistono in R: NUMERICI, divisi in interi (per specificare che sono interi aggiungere L dopo il numero) e razionali
+#                                                                 CHARACTER (testo, deve stare tra virgolette)
+#                                                                 VALORI LOGICI (TRUE e FALSE = T e F)
+my_integer <- 42L
+my_double <- 42.24
+
+
+class(my_numeric)  # funzione CLASS ci restituisce la classe dell'oggetto
+class(my_character)
+class(my_double)
+class(my_integer)
+
+# VETTORI -> oggetti (strutture di dati) unidmensionali che possono avere lunghezza da 0 a N (numero finito), omogenei (una sola classe di dati)
+numeric_vector <- c(1,10,49) # funzione CONCATENATE (c) serve per concatenare gli argomenti che mettiamo tra le parentesi
+numeric_vector               # vettore appena creato composto da 3 elementi numerici
+character_vector <- c("a","b","c")
+character_vector             # vettore di dati character
+# posso anche concatenare argomenti creati, es: character_vector <- c(character_vector,"d") -> ottengo quello di prima più d
+logical_vector <- c(T,T,F,F)
+logical_vector
+
+# operazioni con i vettori
+my_apples_vector <- c(50,70,80,30,150)
+my_oranges_vector <- c(40,70,80,100,80)
+my_fruit_vector <- my_apples_vector + my_oranges_vector  # somma elemento per elemento i due vettori
+my_fruit_vector
+# se i vettori sono di lunghezza differente R mi dà un WARNING e "ricicla" il vettore più corto (se il primo ha 5 elementi e il secondo 4 per stabilire il 5o della somma usa il 5o del primo + il 1o del secondo) )
+my_bananas_vector <- c(40,60,80,100)
+my_fruit_vector <- my_apples_vector + my_bananas_vector
+my_fruit_vector
+# se il + lungo ha lunghezza multipla della lunghezza del secondo R non dà WARNING ma fa la stessa cosa
+
+new_numeric_vector <- 1:10  # i due punti servono per indicare l'intero intervallo
+10:1
+seq(1,10)        # seq fa la stessa cosa dei due punti
+seq(1,10, by=2)  # se a seq aggiungo by=2 dice di andare avanti di 2 anziché di 1 (by è quindi l'incremento della sequenza)
+seq(10,1, by=-2) # per ordine decrescente devo metter il - davanti al numero
+
+rep(c("a","b","c"), 2)      # funzione REPEAT (rep) ripete l'argomento di c il numero di volte indicato (2 in questo caso). sarebbe times=2
+rep(c("a","b","c"), each=2) # each dice ripetere ogni elemento n volte prima di passare al successivo
+rep(1:2, times=10)
+rep(1:2, each=10)
+
+# ISTRUZIONI E SPIEGAZIONI DELLE FUNZIONI DALL'HELP DI R
+?seq
+help("rep")
+
+apples_vector <- c(20,50,30,40,100)
+oranges_vector <- c(70,70,50,20,80)
+names(apples_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")    # funzione names per dare nomi a ciascun elemento all'interno del vettore (i nomi sono a lora volta un vettore)
+names(apples_vector)
+apples_vector
+names(oranges_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(oranges_vector)
+apples_vector + oranges_vector  # nomi vengono mantenuti nella somma
+
+typeof(1:3) # typeof mi dice la classe di dati che richiamo
+typeof(1.1:3)
+typeof(oranges_vector)
+is.numeric(oranges_vector)  # is. per fare domande a R (in questo caso chiedo che tipo di dati contiene i vettori)
+
+# vettori hanno due caratteristiche importanti: tipo di dati e lunghezza (è il numero di elementi)
+length(apples_vector)  # length è una funzione che mi restituisce la lunghezza del vettore
+
+# SELEZIONARE UN ELEMENTO DEI VETTORI (creare un SUBSET di un set di dati)
+apples_vector["Wednesday"]      # posso indicare direttamente il nome tra quadre
+apples_wednesday <- apples_vector["Wednesday"] 
+apples_wednesday 
+apples_vector[c("Monday","Friday")]  # seleziono un vettore composto dai 2 elementi indicati, sempre attraverso i nomi
+apples_vector[1]                     # seleziono elementi per la loro poszione nel vettore (1 è il primo)
+apples_vector[5]
+apples_vector[length(apples_vector)]  # per ottenere l'ultimo elemento di un vettore di lunghezza ignota uso length
+apples_vector[1:3]                    # ottengo i primi 3 elementi del vettore
+apples_vector[3:1]                    # ordine invertito
+apples_vector[-c(1,3)]                # ottengo i valori tranne il 1o e il 3o
+apples_vector[-1]                     # tranne il 1o
+apples_vector[-(2:4)]                 # tolgo quelli dal 2o al 4o
+apples_vector > 80                    # ottengo quelli maggiori di 80 (ottengo vettore lungo come l'orginale composto da TRUE and FALSE)
+selection_vector <- apples_vector > 80
+apples_vector[selection_vector]         # per estrarre solo i maggiori di 80
+apples_vector[apples_vector > 80]       # stessa cosa
+# stessa cosa si può fare con minore (<), maggiore/minore o uguale (>=, <=), uguale (==) e diverso (!=)
+
+### MATRIX ###
+# matrici sono omogenee (dati di un solo tipo)
+matrix(1:9, nrow = 3)  # matrix è la funzione per creare matrice
+
+garden <- c(10,2)    # vettore che indica le presenza di 2 specie di passeriformi rilevate in giardini
+forest <- c(8,3)     # vettore che indica le presenza di 2 specie di passeriformi rilevate in foresta 
+hedgerow <- c(1,12)  # vettore che indica le presenza di 2 specie di passeriformi rilevate in siepi
+community_matrix <- matrix(c(garden, forest, hedgerow), nrow = 3)   # creo la matrice usando i vettori creati disposti su 3 righe
+# la matrice ottenuta è disposta in maniera errata, perchè di default R inserisce i valori per colonne (byrow = F)
+community_matrix <- matrix(c(garden, forest, hedgerow), nrow = 3, byrow = T )  # byrow=T per inserire i valori per righe
+community_matrix
+species <- c ("Parus major", "Erithacus rubecula")  # creo oggetto che indica il nome delle specie
+sites <- c("Garden", "Forest", "Hedgerow")          # creo oggetto che indica i siti
+colnames(community_matrix) <- species # do i nomi a colonne facendo sì che corrispondano alle specie
+community_matrix
+rownames(community_matrix) <- sites   # do i nomi alle righe corrispondenti ai siti
+community_matrix
+passer <- c(15,2,5)
+community_matrix
+cbind(community_matrix, passer) # unisce vettore "passer" alla matrice come colonna (colonna è la c di cbind)
+community_matrix <- cbind(community_matrix, passer)  # sovrascrivo così la modifica è definitiva 
+community_matrix
+park <- c(10, 5, 8)
+rbind(community_matrix, park)   # unisce vettore "park" alla matrice come riga (è la r di rbind)
+community_matrix <- rbind(community_matrix, park)
+community_matrix
+colnames(community_matrix) [3] <- "Passer domesticus"  # cambio il nome alla colonna passer
+rownames(community_matrix) [4] <- "Park"               # cambio il nome alla riga park
+community_matrix
+dim(community_matrix)      # DIMENSION (dim) ci dice numero di righe e di colonne della matrice
+nrow(community_matrix)     # numero righe
+ncol(community_matrix)     # numero colonne
+colSums(community_matrix)  # somma valori colonne
+rowSums(community_matrix)  # somma valori righe
+rbind(community_matrix, Total = colSums(community_matrix))  # inserisco riga finale che indica somma delle colonne, dandole il nome Total
+cbind(community_matrix, Total = rowSums(community_matrix))
+
+community_matrix + 2   # aggiunge 2 a tutti i valori della matrice
+community_matrix * 2   # moltiplica per 2 tutti i valori della matrice
+
+
+
+### FACTORS -> vettori per variabili categoriche
+plants_vector <- c("Tree", "Grass", "Forb", "Grass", "Tree" )  # questo è ancora un vettore "normale"
+plants_vector
+plants_factor <- factor(plants_vector)     # creo un factor
+plants_factor
+# factor sono in realtà vettori di integer: al primo level corrisponde valore 1, al secondo 2, fino a valore N. Ai level oltre a un numero è assegnata una label
+
+# creare factor ordinato (devo specificare ordered=T e l'ordine dei livelli)
+temperature_vector <- c("Low", "High", "Medium", "High", "Low")
+temperature_factor <- factor(temperature_vector,
+                             ordered = T,
+                             levels = c("Low", "Medium", "High"))
+temperature_factor
+
+
+summary(temperature_factor)                                    # frequenze assolute dei livelli
+summary(temperature_factor)/ length(temperature_factor)        # freq relative dei livelli
+summary(temperature_factor)/ length(temperature_factor) * 100  # freq % livelli
+
+substrate_vector <- c("L", "S", "S", "L", "S")
+substrate_factor <- factor(substrate_vector)
+levels(substrate_factor) <-  c("Limestone", "Siliceous")  # specifica le label dei levels
+
+
+### DATAFRAMES -> possono essere eterogenei (a differenza delle matrici)
+dat <- data.frame(
+  id = 1:6,
+  name = c("Eokochia saxicola", "Cytisus aeolicus", "Anthemis aeolica", "Centaurea aeolica", "Silene hicesia", "Genista tyrrhena"),
+  has_legumes = c(F, T, F, F, T, F),
+  population_size = c(50, 2000, 5000, 10000, 200, 3000),
+  growth_form = c("Herb", "Tree", "Herb", "Shrub", "Herb", "Tree")
+  )
+dat
