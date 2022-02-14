@@ -183,3 +183,68 @@ dat <- data.frame(
   growth_form = c("Herb", "Tree", "Herb", "Shrub", "Herb", "Tree")
   )
 dat
+
+dim(dat)
+nrow(dat)
+ncol(dat)
+summary(dat)   # riassunto statistiche associate al dataframe
+class(dat)
+str(dat)       # riassunto struttura del dataframe
+
+dat["1",]      # estrazione prima riga del dataframe (indicando nome esatto della prima riga)
+dat[1, ]       # estrazione prima riga(ottengo un dataframe)
+dat[c(1,2), ]  # estrazione prime due righe (ottengo un dataframe)
+dat[, 2]       # estrazione prima colonna (ottengo un vettore)
+dat[, 2, drop = F]  # estrazione prima colonna mantendo struttura di dataframe (argomento DROP = F)
+dat["name"]    # estrazione seconda colonna con nome esatto (ottengo un dataframe)
+dat[, "name"]  # estrazione seconda colonna con nome esatto (ottengo un vettore, perdo quindi struttura dataframe)
+dat[["name"]]  # estrazione seconda colonna con nome esatto (ottengo un vettore, perdo quindi struttura dataframe); doppia quadrata si può usare solo per un solo elemento
+dat[c("name", "id")] # estrazione prime due colonne (ordine invertito, ottengo un dataframe)
+dat[c("5", "6"), c("id", "name")] # estrazione prime due colonne delle ultime due righe
+dat$id         # estrazione prima colnna (ottengo un vettore)
+dat$has_legumes
+dat[dat$has_legumes == T, ] # estrazione solo righe con has_legume = T
+dat[dat$has_legumes != T, ] # estrazione solo righe con has_legume diverso da T
+dat[dat$population_size < 3000, ]  # estrazione solo righe con pop size < 3000
+dat <- dat[, -4]  # togliere colonna 4 al dataframe (ottenendo nuovo dataframe privato della colonna)
+dat 
+dat$growth_form <- NULL  # altro metodo per rimuovere colonna
+dat
+
+cbind(dat, 1:6)  # aggiungo una colonna fatta di numeri da 1 a 6
+cbind(dat, fid = 1:6)  # do il nome a nuova colonna
+dat$id.2 <- 1:6  # altro modo per aggiungere colonna già nominata
+dat
+
+# non si possono aggiungere righe ai dataframe (o meglio bisogna creare un nuovo dataframe monoriga e poi aggiungerlo)
+# creo il dataframe da aggiungere poi come nuova riga
+new_data <- data.frame(
+  id=7,
+  name = "Limonium minutiflorum",
+  has_legumes = F,
+  id.2 = 7
+)
+new_data
+dat <- rbind(dat, new_data)  # aggiungo riga a dat
+dat
+
+### LISTE (sono l'oggetto più generale in R)
+vec <- 1:10
+mat <- matrix(1:9, ncol = 3)
+dat <- mtcars
+my_list <- list(vec, mat, dat)
+my_list <- list(my_vector = vec, my_matrix = mat, my_dataframe = dat)
+my_list
+my_list[["my_other_vector"]] <- c("bla", "bla", "bla")  # aggiungo una componenente alla lista
+my_list$my_last_vector <- c(T, F, T)  # aggiungo un'altra
+my_list
+str(my_list)
+my_list[[3]]  # visualizzare 3o componente della lista (dataframe)
+my_list[[3]] <- NULL  # rimuoverla
+str(my_list) 
+my_list[[1]][3] # estrarre terzo elemento dela prima componente
+names(my_list) <- c("A", "B", "C", "D")   # rinomino compnoeneti di my_list
+my_list
+# per unire 2 liste in una sola -> c(my_list, my_list2)
+# per unire 2 liste creando due gruppi di componenti distainte -> list(my_list, my_list2)
+# per rimuovere valori si usa NULL
