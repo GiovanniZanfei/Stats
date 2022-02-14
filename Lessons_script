@@ -246,7 +246,8 @@ my_list[[1]][3] # estrarre terzo elemento dela prima componente
 names(my_list) <- c("A", "B", "C", "D")   # rinomino compnoeneti di my_list
 my_list
 # per unire 2 liste in una sola -> c(my_list, my_list2)
-
+# per unire 2 liste creando due gruppi di componenti distainte -> list(my_list, my_list2)
+# per rimuovere valori si usa NULL
 
 ### CREARE FUNZIONI
 # creo funzione che aggiunge 2 a un numero
@@ -262,5 +263,30 @@ cheer_me <- function(nome) {
 }
 
 cheer_me("Bubu")
-# per unire 2 liste creando due gruppi di componenti distainte -> list(my_list, my_list2)
-# per rimuovere valori si usa NULL
+
+### CICLI -> servono per applicare strutture a più oggetti (ITERAZIONE)
+for (i in 1:10) {
+  print(i)
+}
+
+data(dune)
+
+sr <- vector()
+for (i in 1:nrow(dune)) {
+  sr[i] <- sum(dune[i, ] >0)
+}
+sr
+
+# funzione che contiene cicli
+calculate_sr <- function(df) {
+  sr <- vector()
+  for (i in 1:nrow(df)) {
+    sr[i] <- sum(df[i, ] >0)
+  }
+  return(sr)
+}
+
+calculate_sr(df = dune)
+
+
+
