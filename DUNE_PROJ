@@ -12,3 +12,52 @@ library(vegan)
 dune.env$Moisture <- factor(dune.env$Moisture, ordered = T)
 dune.env$Manure <- factor(dune.env$Manure, ordered = T)
 dune.env$Use <- factor(dune.env$Use, ordered = T)
+str(dune.env)
+
+summary(dune)
+summary(dune.env)
+
+hist(dune.env$A1)  # istogramma valori A1 (istogramma è utile per raffigurare distribuzione di un'unica variabile quantitativa)
+hist(dune.env$A1, 
+     xlab = "Thickness of soil A1 horizon (cm)",   # titolo asse x
+     main = NULL,                                  # tolgo titolo al grafico
+     breaks = 10)                                  # aumento numero di colonne dell'istogramma
+
+man.counts <- table(dune.env$Management)
+man.counts
+barplot(man.counts)    # barplot grafico per osservare distribuzione di variabili qualitative
+barplot(man.counts,
+        xlab = "Management type",
+        ylab = "N of plots",
+        )
+
+table(dune.env$Manure,                   # tabella a doppia entrata delle due variabili (manure sulle righe, management sulle colonne)
+      dune.env$Management)
+
+barplot(counts,
+        xlab = "Management type",
+        ylab = "Manure quality",
+        main = "Plot distribution by Management and Manure",
+        legend = rownames(counts),
+        xlim = c(0,6))
+
+prop.table(counts)                 # stessa tabella di prima ma con frequenze percentuali e non assolute
+prop.table(counts, margin = 1)     # solo fequenze realtive alle righe (percentuali sul totale della riga)
+prop.table(counts, margin = 2)     # uguale ma su colonne
+
+
+
+boxplot(sr ~ dune.env$Use,                # sr in funzione all'uso
+        xlab = "Use type",
+        ylab = "Species Richness")    
+
+specnumber(dune)        # funzione di vegan per calcolare sr 
+
+dune.env$sr <- specnumber(dune)
+str(dune.env)
+
+boxplot(sr ~ Use,                      # specificando data=dune.env (tutti i dati hanno la stessa sorgente), non serve usare $
+        data = dune.env,
+        xlab = "Use type",
+        ylab = "Species Richness")
+        
