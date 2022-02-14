@@ -246,5 +246,21 @@ my_list[[1]][3] # estrarre terzo elemento dela prima componente
 names(my_list) <- c("A", "B", "C", "D")   # rinomino compnoeneti di my_list
 my_list
 # per unire 2 liste in una sola -> c(my_list, my_list2)
+
+
+### CREARE FUNZIONI
+# creo funzione che aggiunge 2 a un numero
+add_two <- function(x) {
+  x_plus_two <- x + 2
+  return(x_plus_two)
+}
+add_two(5)
+
+cheer_me <- function(nome) {
+  cheer_string <- paste("Hello", nome, sep = " ")
+  print(cheer_string)
+}
+
+cheer_me("Bubu")
 # per unire 2 liste creando due gruppi di componenti distainte -> list(my_list, my_list2)
 # per rimuovere valori si usa NULL
