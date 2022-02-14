@@ -1,0 +1,14 @@
+### DUNE PROJ
+# carico dataframe
+dune <- read.table("dune.txt")
+dune.env <- read.csv("dune_env.csv",
+                     stringsAsFactors = TRUE)
+str(dune)
+str(dune.env)
+install.packages("vegan")
+library(vegan)
+?dune
+
+dune.env$Moisture <- factor(dune.env$Moisture, ordered = T)
+dune.env$Manure <- factor(dune.env$Manure, ordered = T)
+dune.env$Use <- factor(dune.env$Use, ordered = T)
