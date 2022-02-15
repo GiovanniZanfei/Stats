@@ -1,0 +1,26 @@
+### 2. IMPORT DATASETS ###
+
+BCI <- read.csv("data/BCI.csv")
+BCI_env <- read.table("data/BCI_env.txt", 
+                      fill = T,                 # importare dataset nonostante errori
+                      header = T,               # usare prima riga come intestazione
+                      sep = " ",                # allineare correttamente
+                      na.strings = c("", NA))   # presenti oltre a NA anche "vuoti" -> considero come NA
+
+View(BCI_env)  # visualizzo il dataset per capire come comportarmi
+View(BCI)
+
+obs_number <- nrow(BCI_env)
+obs_number                   # numero di osservazioni [50] (numero di righe di entrambi i datasets)
+
+sp_number <- ncol(BCI)       # numero di specie [225] (colonne di BCI, colonne della community matrix)
+sp_number
+
+env_variables <- ncol(BCI_env)  # numero variabili ambientali [9] (colonne di BCI_env)
+env_variables
+
+### 3. MATCHING COLUMN - DATA TYPES ###
+
+library(vegan)
+?BCI
+str(BCI_env)
