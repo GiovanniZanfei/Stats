@@ -1,0 +1,23 @@
+library(vegan)
+
+### Importo datasets
+bryceveg <- read.csv("data/bryceveg.csv")
+brycesite <- read.table("data/brycesite.txt", sep = " ", fill = T, header = T, na.strings = c("", NA))
+
+install.packages("labdsv")
+library(labdsv)
+
+index_na <- which(is.na(brycesite), arr.ind = T) # trovo posizioni degli NA e creo un oggetto
+index_na[, 1] 
+
+brycesite <- na.omit(brycesite) # rimuovo Na da brycesite
+bryceveg <- bryceveg[-(index_na[, 1]), ] # rimuovo righe corrispondenti da bryceveg
+
+
+nrow(brycesite) 
+nrow(bryceveg)
+ncol(brycesite)
+ncol(bryceveg)
+
+str(brycesite)
+str(bryceveg)
