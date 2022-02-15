@@ -288,5 +288,34 @@ calculate_sr <- function(df) {
 
 calculate_sr(df = dune)
 
+#### ISTRUZIONI DATA UNA CONDIZIONE
+
+x <- 5
+if(x > 10) {                                    # la prima riga dà il comando in caso di condizione soddisfatta, la seconda dice cosa fare se non è soddisfatta
+  print(paste(x, "Is greater than ten"))
+} else {
+  print(paste(x, "Is smaller than ten"))
+}
+
+# aggiungo un'altra condizione
+x <- 10
+if(x > 10) {                                    
+  print(paste(x, "Is greater than ten"))
+} else if (x == 10) {
+  print(paste(x, "Is equal to ten"))
+}  else {
+  print(paste(x, "Is smaller than ten"))
+}
+
+# funzione per sapere se un numero è pari o dispari
+is_odd <- function(x) {
+  if(x %% 2 == 1) {
+    print(TRUE)
+  } else {
+    print(FALSE)
+  }
+}
+is_odd(4)
+is_odd(5)
 
 
