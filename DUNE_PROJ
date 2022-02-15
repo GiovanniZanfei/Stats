@@ -60,4 +60,52 @@ boxplot(sr ~ Use,                      # specificando data=dune.env (tutti i dat
         data = dune.env,
         xlab = "Use type",
         ylab = "Species Richness")
+    
+
+boxplot(sr ~ Management,
+        data = dune.env,
+        xlab = "Management type",
+        ylab = "Species RIchness")
         
+
+# SCATTER PLOT quando abbiamo due variabili continue
+plot(sr ~ A1,
+     data = dune.env,
+     xlab = "Thickness of A1 soil horizon (cm)",
+     ylab = "Species Richness")
+     
+# per esportare i grafici usare export (metodo più semplice)
+# alternativa
+png("output/sr_vs_A1.png", width = 350, height = 350)
+plot(sr ~ A1,
+     data = dune.env,
+     xlab = "Thickness of A1 soil horizon (cm)",
+     ylab = "Species Richness")
+dev.off()
+
+# per salvare in altri formati basta metterli al posto di png
+
+
+dune.env_head <- head(dune.env)   # head è un comando per mostrare le prime righe di un dataframe
+# esportare questo oggetto
+write.table(dune.env_head,
+            "output/dune.env_head.txt")
+write.csv(dune.env_head,
+          "output/dune.env_head.csv", row.names = FALSE)
+          
+          
+# Test di indipendenza
+
+dune_pa <- decostand(dune, method = "pa") # creo tabella di presenza/assenza specie (prime c'erano quantità)
+str(dune_pa)
+
+specnumber(dune_pa, MARGIN = 2)  # somma le colonne della tabella (in questo caso il numero di siti in cui ogni sp è presente)
+
+species_by_use <- aggregate(dune_pa[c("Scorautu", "Trifrepe")],    # tabella di frequenze delle due specie nei tipi di uso
+                            by = list(dune.env$Use),
+                            FUN = "sum")
+
+chisq.test(species_by_use[, -1])  # test chiquadro
+
+
+     
