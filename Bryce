@@ -2,13 +2,31 @@ library(vegan)
 
 ### Importo datasets
 bryceveg <- read.csv("data/bryceveg.csv")
-brycesite <- read.table("data/brycesite.txt", sep = " ", fill = T, header = T, na.strings = c("", NA))
+brycesite <- read.table("data/brycesite.txt", 
+                        sep = " ",                 # specifico il tipo di separatore, così le celle non si spostano
+                        fill = T,                  # fill = T per importare cmq la matrice
+                        header = T,                # specifico che la prima riga va usata come intestazione della tabella
+                        na.strings = c("", NA))    # ho notato che oltre a valori NA ci sono spazi vuoti, quindi comunico a R di considerare anche questi come NA 
+
+View(brycesite)  # vedo com'è strutturato il dataframe
+View(bryceveg)
+
+nrow(brycesite) 
+nrow(bryceveg)
+ncol(brycesite)
+ncol(bryceveg)
+
+str(brycesite)
+str(bryceveg)
+
+summary(brycesite)
+summary(bryceveg)
 
 install.packages("labdsv")
 library(labdsv)
 
 index_na <- which(is.na(brycesite), arr.ind = T) # trovo posizioni degli NA e creo un oggetto
-index_na[, 1] 
+index_na[, 1]                                    # nella prima colonna ci sono tutte le righe che voglio omettere
 
 brycesite <- na.omit(brycesite) # rimuovo Na da brycesite
 bryceveg <- bryceveg[-(index_na[, 1]), ] # rimuovo righe corrispondenti da bryceveg
@@ -19,5 +37,39 @@ nrow(bryceveg)
 ncol(brycesite)
 ncol(bryceveg)
 
-str(brycesite)
-str(bryceveg)
+specnumber(bryceveg, MARGIN = 2)  # calcolo frequenza assoluta delle sp
+round((specnumber(bryceveg, MARGIN = 2) / nrow(bryceveg)) * 100, 2) # calcolo frequenza relativa (%) delle sp
+
+brycesite$depth <- factor(brycesite$depth,                 # importo correttamente la variabile
+                          levels = c("shallow", "deep"),
+                          ordered = T)
+brycesite$pos <- factor(brycesite$pos,
+                        levels = c("bottom", "low_slope", "mid_slope", "up_slope", "ridge"),
+                        ordered = T)  
+# creo matrice di presenza/assenza
+bryceveg <- decostand(bryceveg, method = "pa")
+head(bryceveg)
+specnumber(bryceveg)
+brycesite$sr <- specnumber(bryceveg)   # creo colonna sr in brycesite
+
+hist(brycesite$annrad)
+
+png("output/Figura1.png")
+hist(brycesite$sr,
+     main = NULL,
+     xlab = "RIcchezza di specie per sito",
+     ylab = "Numero plot")
+dev.off()
+
+table(brycesite$pos)
+barplot(table(brycesite$pos))
+
+table(brycesite$pos, brycesite$depth)
+barplot(table(brycesite$pos, brycesite$depth))
+
+boxplot(brycesite$sr ~ brycesite$pos)
+
+plot(brycesite$elev, brycesite$sr)
+cor.test(brycesite$elev, brycesite$sr)          # correlazione positiva, significatività così così
+
+summary(lm(sr ~ elev, data = brycesite))
