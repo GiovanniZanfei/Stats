@@ -1,0 +1,99 @@
+### 2. IMPORT DATASETS ###
+
+BCI <- read.csv("data/BCI.csv")
+BCI_env <- read.table("data/BCI_env.txt", 
+                      fill = T,                 # importare dataset nonostante errori
+                      header = T,               # usare prima riga come intestazione
+                      sep = " ",                # allineare correttamente
+                      na.strings = c("", NA))   # presenti oltre a NA's anche "vuoti" -> considero come NA
+
+View(BCI_env)  # visualizzo il dataset per capire come comportarmi
+View(BCI)
+
+obs_number <- nrow(BCI_env)
+obs_number                   # numero di osservazioni [50] (numero di righe di entrambi i datasets)
+
+sp_number <- ncol(BCI)       
+sp_number                    # numero di specie [225] (colonne di BCI, colonne della community matrix)
+
+env_variables <- ncol(BCI_env)  
+env_variables                # numero variabili ambientali [9] (colonne di BCI_env)
+
+### 3. MATCHING COLUMN - DATA TYPES ###
+
+library(vegan)
+?BCI
+str(BCI)
+str(BCI_env)
+
+# non credo serva modificare le classi di dati visto che mi sembrano in accordo con la descrizione fornita da R
+
+### 4. SUMMARY & NA's ###
+
+summary(BCI)
+summary(BCI_env)
+
+View(BCI_env)
+which(is.na(BCI_env), arr.ind = T)              # trovo le posizioni degli NA's in BCI_env
+index_na <- which(is.na(BCI_env), arr.ind = T)  # creo un oggetto con le posizioni degli NA's
+index_na[, 1]                                   # la prima colonna contiene le righe che voglio omettere
+
+BCI_env <- na.omit(BCI_env)       # rimuovo NA's da BCI_env (sovrascrivendo)
+BCI <- BCI[-(index_na[, 1]), ]    # rimuovo le righe corrispondenti da BCI (sovrascrivendo)
+
+nrow(BCI) 
+nrow(BCI_env)
+ncol(BCI)
+ncol(BCI_env)
+
+# i nuovi datasets hanno entrambi 47 righe
+
+### 5. ENVIRONMENTAL VARIABLES GRAPHS ###
+
+# uso $Habitat perchè è quella su cui mi pare più sensato fare un barplot
+
+barplot(BCI_env$Habitat)    # error (solved)
+
+
+table(BCI_env$Habitat)      # trasformo le info di $Habitat in una tabella così da poter plottare il tutto 
+barplot(table(BCI_env$Habitat),
+        main = "Plot per Habitat Type",
+        xlab = "Dominant Habitat Type",
+        ylab = "N° Plot",
+        ylim = c(0, 25))    # correzioni grafiche
+
+# esporto il grafico in png
+
+?png   # indicazioni per migliorare dimensioni e risoluzione
+
+png("output/Barplot1.png", width = 1000, height = 1000, res = 200)
+barplot(table(BCI_env$Habitat),
+        main = "Plot per Habitat Type",
+        xlab = "Dominant Habitat Type",
+        ylab = "N° Plot",
+        ylim = c(0, 25))
+dev.off()
+
+### 6. P/A MATRIX ###
+
+head(BCI)                              # il dataset non è una matrice di p/a
+BCI <- decostand(BCI, method = "pa")   # conversione inuna tabella di p/a
+head(BCI)
+
+### 7. SPECIES RICHNESS ###
+
+specnumber(BCI, MARGIN = 2)                                # frequenza assoluta delle specie nei siti
+round((specnumber(BCI, MARGIN = 2) / nrow(BCI)) * 100, 2)  # frequenza relativa (%)
+specnumber(BCI)
+BCI_env$sr <- specnumber(BCI)   
+
+### 8     # PROVARE PLOT SR E ENVHET
+boxplot(BCI_env$sr ~ BCI_env$Habitat)
+
+plot(BCI_env$EnvHet, BCI_env$sr)
+cor.test(BCI_env$EnvHet, BCI_env$sr)         
+
+summary(lm(sr ~ EnvHet, data = BCI_env))
+
+plot(BCI_env$UTM.NS, BCI_env$sr)
+cor.test(BCI_env$UTM.NS, BCI_env$sr)
