@@ -24,3 +24,50 @@ env_variables
 library(vegan)
 ?BCI
 str(BCI_env)
+str(BCI_env)
+summary(BCI_env)
+summary(BCI)
+
+##### TEST ####
+
+### 4
+index_na <- which(is.na(BCI_env), arr.ind = T) 
+index_na[, 1]                                    
+
+BCI_env <- na.omit(BCI_env) 
+BCI <- BCI[-(index_na[, 1]), ] 
+
+nrow(BCI) 
+nrow(BCI_env)
+ncol(BCI)
+ncol(BCI_env)
+
+### 5     # CHIEDERE BARPLOT 2 VARIABILI E LUMI SU ENVHET
+hist(BCI_env$Habitat)       # error  (solved)
+barplot(BCI_env$Habitat)    # error (solved)
+
+
+table(BCI_env$Habitat)
+barplot(table(BCI_env$Habitat))
+
+### 6
+BCI <- decostand(BCI, method = "pa")
+head(BCI)
+
+### 7
+specnumber(BCI, MARGIN = 2) 
+round((specnumber(BCI, MARGIN = 2) / nrow(BCI)) * 100, 2) 
+specnumber(BCI)
+BCI_env$sr <- specnumber(BCI)   
+
+### 8  # LUMI SU GRAFICI E TEST     # PROVARE PLOT SR E ENVHET
+boxplot(BCI_env$sr ~ BCI_env$Habitat)
+
+plot(BCI_env$EnvHet, BCI_env$sr)
+cor.test(BCI_env$EnvHet, BCI_env$sr)         
+
+summary(lm(sr ~ EnvHet, data = BCI_env))
+
+plot(BCI_env$UTM.NS, BCI_env$sr)
+cor.test(BCI_env$UTM.NS, BCI_env$sr)
+         
